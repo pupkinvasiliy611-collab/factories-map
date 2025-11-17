@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Карта поставщиков</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    body { margin:0; padding:0; font-family: sans-serif; }
+    #map { width:100vw; height:100vh; }
+    
+    /* --- ОБНОВЛЕННЫЕ СТИЛИ ДЛЯ ФИЛЬТРОВ --- */
+    #filter-container {
+        position: absolute;
+        top: 10px;
+        left: 50px;
+        z-index: 1000;
+        background-color: white;
+        padding: 10px 15px;
+        border-radius: 5px;
+        box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+        display: flex;
+        flex-wrap: wrap; /* Позволяет фильтрам переноситься на новую строку на узких экранах */
+        gap: 20px; /* Увеличим расстояние между фильтрами */
+    }
+    .filter-group {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .filter-group label {
+        font-weight: bold;
+        color: #333;
+        white-space: nowrap;
+    }
+    .filter-group select {
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        min-width: 200px;
+    }
+    /* --- КОНЕЦ ИЗМЕНЕНИЙ В СТИЛЯХ --- */
+
+    .leaflet-popup-content-wrapper { border-radius: 5px; }
+    .leaflet-popup-content { margin: 15px; font-size: 14px; line-height: 1.5; }
+    .leaflet-popup-content h4 { margin-top: 0; margin-bottom: 10px; font-size: 18px; }
+    .leaflet-popup-content hr { border: 0; border-top: 1px solid #eee; margin: 10px 0; }
+    .leaflet-popup-content table { width: 100%; border-collapse: collapse; }
+    .leaflet-popup-content th, .leaflet-popup-content td {
+      padding: 6px 0; vertical-align: top; border-bottom: 1px solid #eee;
+    }
+    .leaflet-popup-content th {
+      text-align: left; font-weight: bold; white-space: nowrap; padding-right: 15px; color: #555;
+    }
+    .leaflet-popup-content tr:last-child th, .leaflet-popup-content tr:last-child td { border-bottom: none; }
+    .leaflet-popup-content a { color: #0078A8; text-decoration: none; }
+    .leaflet-popup-content a:hover { text-decoration: underline; }
+    .leaflet-popup-content .product-list { margin: 0; padding-left: 20px; }
+    .leaflet-popup-content .product-list-multicolumn { column-count: 2; column-gap: 25px; }
+    .leaflet-popup-content .product-list li { margin-bottom: 4px; break-inside: avoid-column; }
+    .leaflet-tooltip.factory-label {
+      background-color: rgba(255, 255, 255, 0.85); border: none; box-shadow: none; border-radius: 4px;
+      color: #333; font-size: 12px; font-weight: bold; padding: 3px 7px; white-space: nowrap;
+    }
+    .factory-label.leaflet-tooltip-right::before, .factory-label.leaflet-tooltip-left::before,
+    .factory-label.leaflet-tooltip-top::before, .factory-label.leaflet-tooltip-bottom::before { border: none !important; }
+</style>
+</head>
+<body>
+  
+  <!-- ОБНОВЛЕННЫЙ БЛОК ДЛЯ ТРЕХ ФИЛЬТРОВ -->
+<div id="filter-container">
+  <div class="filter-group">
+    <label for="city-filter">Город:</label>
+    <select id="city-filter">
+      <option value="">Все города</option>
+    </select>
+  </div>
+  <div class="filter-group">
+    <label for="main-product-filter">Основная продукция:</label>
+    <select id="main-product-filter">
+      <option value="">Вся основная продукция</option>
+    </select>
+  </div>
+  <div class="filter-group">
+    <label for="secondary-product-filter">Продукция:</label>
+    <select id="secondary-product-filter">
+      <option value="">Вся продукция</option>
+    </select>
+  </div>
+</div>
+
+  <div id="map"></div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
